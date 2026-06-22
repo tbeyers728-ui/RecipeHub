@@ -49,6 +49,27 @@ npm run dev
 | DELETE | `/api/shopping-list/:id` | Remove item |
 | DELETE | `/api/shopping-list/checked` | Clear all checked items |
 
+### Pantry Tracker
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/pantry` | List all pantry items |
+| POST | `/api/pantry` | Add / update item (upsert by name) |
+| POST | `/api/pantry/bulk` | Bulk upsert (e.g. after shopping) |
+| PATCH | `/api/pantry/:id` | Update quantity / expiry |
+| DELETE | `/api/pantry/:id` | Remove item |
+| GET | `/api/pantry/can-cook` | Match pantry against recipes (`?min_match_pct=70`) |
+
+### Cooking Timers
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/timers/session` | Start a cooking session for a recipe |
+| GET | `/api/timers/session/:session_id` | List timers in a session |
+| GET | `/api/timers/recipe/:recipe_id/suggested` | Auto-parse timers from step instructions |
+| POST | `/api/timers` | Create a timer in a session |
+| PATCH | `/api/timers/:id/pause` | Pause a running timer |
+| PATCH | `/api/timers/:id/resume` | Resume a paused timer |
+| PATCH | `/api/timers/:id/stop` | Mark timer completed or cancelled |
+
 ## Authentication
 
 All endpoints except `/api/auth/register` and `/api/auth/login` require:

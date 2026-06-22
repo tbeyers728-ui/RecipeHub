@@ -72,6 +72,41 @@ CREATE TABLE IF NOT EXISTS saved_recipes (
   saved_at TIMESTAMPTZ DEFAULT NOW(),
   PRIMARY KEY (user_id, recipe_id)
 );
+
+CREATE TABLE IF NOT EXISTS pantry_items (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  quantity NUMERIC,
+  unit TEXT,
+  category TEXT,
+  expires_at DATE,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_id, name)
+);
+
+CREATE TABLE IF NOT EXISTS cooking_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  recipe_id UUID REFERENCES recipes(id) ON DELETE SET NULL,
+  started_at TIMESTAMPTZ DEFAULT NOW(),
+  ended_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS cooking_timers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  session_id UUID REFERENCES cooking_sessions(id) ON DELETE CASCADE,
+  label TEXT,
+  step_number INT,
+  duration_seconds INT NOT NULL,
+  remaining_seconds INT,
+  starts_at TIMESTAMPTZ,
+  ends_at TIMESTAMPTZ,
+  status TEXT DEFAULT 'running' CHECK (status IN ('running','paused','completed','cancelled')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 `;
 
 (async () => {

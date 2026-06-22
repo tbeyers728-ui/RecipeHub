@@ -10,6 +10,8 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/recipes', require('./routes/recipes'));
 app.use('/api/meal-plan', require('./routes/mealPlan'));
 app.use('/api/shopping-list', require('./routes/shoppingList'));
+app.use('/api/pantry', require('./routes/pantry'));
+app.use('/api/timers', require('./routes/timers'));
 
 app.get('/health', (_, res) => res.json({ status: 'ok' }));
 
